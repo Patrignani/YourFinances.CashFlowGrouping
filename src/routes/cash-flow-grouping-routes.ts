@@ -9,4 +9,5 @@ router.get('/:id', cashFlowGroupingController.GetById);
 router.delete('/:id',cashFlowGroupingController.Delete);
 router.put('/ActiveInactive/:id',cashFlowGroupingController.ActiveInactive);
 router.put('/:id',cashFlowGroupingController.Update);
+
 export default router;

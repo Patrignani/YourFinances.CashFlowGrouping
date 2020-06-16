@@ -2,6 +2,7 @@ import CashFlowGrouping, { ICashFlowGrouping, ValidCashFlowGrouping } from '../m
 import { ResultModel } from '../models/response/result-model';
 import * as  noder from 'noder.io';
 import { Ioc } from "../config/ioc";
+import { CashFlowGroupingFilter } from '../models/filters/cash-flow-grouping-filter';
 
 export async function Post(req: any, res: any) {
 
@@ -9,7 +10,7 @@ export async function Post(req: any, res: any) {
 
     try {
 
-        var result = noder.$inject(Ioc.TOKEN, function (user) {
+        let result = noder.$inject(Ioc.TOKEN, function (user) {
             return user;
         });
 
@@ -43,9 +44,12 @@ export async function Post(req: any, res: any) {
 export async function GetById(req: any, res: any) {
     let value = new ResultModel<ICashFlowGrouping>();
     try {
-        const cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id });
+        var result = noder.$inject(Ioc.TOKEN, function (user) {
+            return user;
+        });
 
-        value.success = true;
+        const cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id, accountId: result.Account_Id });
+
         value.data = cashFlowGrouping;
 
         res.status(200).json(value);
@@ -60,8 +64,14 @@ export async function GetById(req: any, res: any) {
 
 export async function GetAll(req: any, res: any) {
     try {
-        var object: ICashFlowGrouping[] = await CashFlowGrouping.find({ active: true });
-        //var object: ICashFlowGrouping[] = await CashFlowGrouping.find();
+
+        var result = noder.$inject(Ioc.TOKEN, function (user) {
+            return user;
+        });
+
+        var filter = new CashFlowGroupingFilter(req, result);
+        var object: ICashFlowGrouping[] = await filter.GetAllCashFlowGroupingPerFilter(CashFlowGrouping);
+
         res.status(200).json(object);
     }
     catch (e) {
@@ -87,7 +97,6 @@ export async function ActiveInactive(req: any, res: any) {
         await cashFlowGrouping.save();
 
         value.data = cashFlowGrouping;
-        value.success = true;
 
         res.status(200).json(value);
     }
@@ -102,13 +111,15 @@ export async function ActiveInactive(req: any, res: any) {
 export async function Delete(req: any, res: any) {
     let value = new ResultModel<ICashFlowGrouping>();
     try {
+        var result = noder.$inject(Ioc.TOKEN, function (user) {
+            return user;
+        });
 
-        const cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id });
+        const cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id, accountId: result.Account_Id  });
         cashFlowGrouping.delete();
         await cashFlowGrouping.save();
 
         value.data = cashFlowGrouping;
-        value.success = true;
 
         res.status(200).json(value);
     }
@@ -124,13 +135,13 @@ export async function Update(req: any, res: any) {
     let value = new ResultModel<ICashFlowGrouping>();
     try {
 
-        const cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id });
+        var result = noder.$inject(Ioc.TOKEN, function (user) {
+            return user;
+        });
+
+        const cashFlowGrouping = await CashFlowGrouping.findOne({ _id: req.params.id, accountId: result.Account_Id });
 
         if (cashFlowGrouping) {
-
-            var result = noder.$inject(Ioc.TOKEN, function (user) {
-                return user;
-            });
 
             cashFlowGrouping.active = req.body.active;
             cashFlowGrouping.identification = req.body.identification;
@@ -143,8 +154,6 @@ export async function Update(req: any, res: any) {
                 await cashFlowGrouping.save();
 
                 value.data = cashFlowGrouping;
-                value.success = true;
-
                 res.status(200).json(value);
             }
             else{

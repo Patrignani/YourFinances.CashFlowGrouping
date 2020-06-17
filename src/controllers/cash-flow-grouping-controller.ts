@@ -3,6 +3,7 @@ import { ResultModel } from '../models/response/result-model';
 import * as  noder from 'noder.io';
 import { Ioc } from "../config/ioc";
 import { CashFlowGroupingFilter } from '../models/filters/cash-flow-grouping-filter';
+import { RegisterInitCashFlowToAccount } from '../service/account-service';
 
 export async function Post(req: any, res: any) {
 

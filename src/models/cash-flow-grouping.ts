@@ -65,8 +65,7 @@ export function ValidCashFlowGrouping (cashFlowGrouping: ICashFlowGrouping) : IR
 const CashFlowGroupingSchema: Schema = new Schema({
     identification: {
         type: String,
-        require: true,
-        unique: true
+        require: true
     },
     active: {
         type: Boolean,

@@ -4,8 +4,11 @@ import * as bodyParser from "body-parser";
 import { SystemConfig } from '../src/config/system-config';
 import cashFlowGroupingRoutes from "./routes/cash-flow-grouping-routes";
 import * as passport from "./config/auth";
+import * as compression from "compression";
 
 const app = express();
+
+app.use(compression());
 
 mongoose.connect(SystemConfig.MONGO_CONNECTION, 
     { useNewUrlParser: true, useCreateIndex: true });

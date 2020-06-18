@@ -11,8 +11,7 @@ const app = express();
 app.use(compression());
 
 mongoose.connect(SystemConfig.MONGO_CONNECTION, 
-    { useNewUrlParser: true, useCreateIndex: true });
-
+    { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

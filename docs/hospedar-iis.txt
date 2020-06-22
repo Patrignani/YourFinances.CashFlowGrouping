@@ -1,3 +1,23 @@
 https://github.com/Azure/iisnode
 
 1 - download https://github.com/azure/iisnode/releases/download/v0.2.21/iisnode-full-v0.2.21-x64.msi
+
+https://www.it-swarm.dev/pt/asp.net/iis-erro-de-configuracao-esta-secao-de-configuracao-nao-pode-ser-usada-neste-caminho/1056278724/
+
+Siga as etapas abaixo para desbloquear os manipuladores no nível pai:
+
+1) Na árvore de conexões (no IIS), vá para o nó do servidor e, em seguida, para o seu site.
+
+2) Para o site, na janela da direita você verá o editor de configuração em Gerenciamento.
+
+3) Clique duas vezes no editor de configuração. 
+
+4) Na janela que se abre, na parte superior, você encontrará uma lista suspensa para seções. Escolha "system.webServer/handlers" no menu suspenso.
+
+5) No lado direito, há outro drop down. Escolha "ApplicationHost.Config"
+
+6) No painel mais à direita, você encontrará "Desbloquear Seção" sob o título "Seção". Clique nisso.
+
+7) Uma vez que os manipuladores do aplicativoHost estiverem desbloqueados, seu site deve funcionar bem.
+
+ 106

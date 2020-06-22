@@ -13,44 +13,37 @@ export interface ICashFlowGrouping extends IBasic {
     identification: string;
     accountId: number;
     typeBox: number;
-    editionUserId:number;
+    editionUserId: number;
 }
 
-export function ValidCashFlowGrouping (cashFlowGrouping: ICashFlowGrouping) : IResultModel<ICashFlowGrouping> {
+export function ValidCashFlowGrouping(cashFlowGrouping: ICashFlowGrouping): IResultModel<ICashFlowGrouping> {
 
     let value = new ResultModel<ICashFlowGrouping>();
 
 
-    if (!cashFlowGrouping.identification) 
-    {
+    if (!cashFlowGrouping.identification) {
         value.messages.push("Campo Identificação é obigatória!")
     }
-    else if(cashFlowGrouping.identification.trim().length < 1)
-    {
+    else if (cashFlowGrouping.identification.trim().length < 1) {
         value.messages.push("Identificação tem que conter no mínimo 1 caracter!")
-    } 
-    else if (cashFlowGrouping.identification.trim().length > 200)
-    {
+    }
+    else if (cashFlowGrouping.identification.trim().length > 200) {
         value.messages.push("Identificação tem que conter no máximo 200 caracter!")
     }
 
-    if(cashFlowGrouping.active == null || cashFlowGrouping.active == undefined)
-    {
+    if (cashFlowGrouping.active == null || cashFlowGrouping.active == undefined) {
         value.messages.push("Campo Ativo é obigatória!")
     }
 
-    if(!cashFlowGrouping.accountId)
-    {
+    if (!cashFlowGrouping.accountId) {
         value.messages.push("Campo Conta Id é obigatória!")
     }
 
-    if(!cashFlowGrouping.typeBox)
-    {
+    if (!cashFlowGrouping.typeBox) {
         value.messages.push("Campo Tipo de Caixa é obigatória!")
     }
 
-    if(cashFlowGrouping.typeBox != -1 && cashFlowGrouping.typeBox != 1)
-    {
+    if (cashFlowGrouping.typeBox != -1 && cashFlowGrouping.typeBox != 1) {
         value.messages.push("Campo Tipo de Caixa é inválido!")
     }
 
@@ -86,8 +79,10 @@ const CashFlowGroupingSchema: Schema = new Schema({
         require: true
     }
 },
-{
-    timestamps: true,
-});
+    {
+        timestamps: true,
+    });
+    
+CashFlowGroupingSchema.index({ identification: 1, accountId: 1 }, { unique: true });
 
-    export default model<ICashFlowGrouping>('CashFlowGrouping', CashFlowGroupingSchema);
+export default model<ICashFlowGrouping>('CashFlowGrouping', CashFlowGroupingSchema);
